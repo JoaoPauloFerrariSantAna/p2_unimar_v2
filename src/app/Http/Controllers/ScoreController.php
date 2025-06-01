@@ -4,36 +4,36 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
-use App\Models\AuthorModel;
+use App\Models\ScoreModel;
 
-class AuthorController extends Controller
+class ScoreController extends Controller
 {
-	public function getAuthors()
+	public function getScores()
 	{
-		return response()->json(AuthorModel::all());
+		return response()->json(ScoreModel::all());
 	}
 
-	public function detailAuthor(int $id)
+	public function detailScore(int $id)
 	{
-		$author = null;
+		$score = null;
 		try
 		{
-			$author = AuthorModel::findOrFail($id);
+			$score = ScoreModel::findOrFail($id);
 		}
 		catch(ModelNotFoundException $e)
 		{
-			return response()->json("AUTHOR NOT FOUND");
+			return response()->json("SCORE NOT FOUND");
 		}
-		return response()->json($author);
+		return response()->json($score);
 	}
 
-	public function storeAuthor(Request $req)
+	public function storeScore(Request $req)
 	{
-		$author				= new AuthorModel();
-		$author->name		= $req->input("aname", null);
-		$author->birthDay	= $req->input("abday", null);
-		$author->biograph 	= $req->input("abio", null);
-		$author->save();
+		$score				= new ScoreModel();
+		$score->name		= $req->input("aname", null);
+		$score->birthDay	= $req->input("abday", null);
+		$score->biograph 	= $req->input("abio", null);
+		$score->save();
 		return response()->json($author);
 	}
 
@@ -45,7 +45,7 @@ class AuthorController extends Controller
 		$newBio		= $req->input("abio", null);
 		try
 		{
-			$author = AuthorModel::findOrFail($id);
+			$author = ScoreModel::findOrFail($id);
 		}
 		catch(ModelNotFoundException $e)
 		{
@@ -65,7 +65,7 @@ class AuthorController extends Controller
 		$author = null;
 		try
 		{
-			$author = AuthorModel::findOrFail($id);
+			$author = ScoreModel::findOrFail($id);
 		}
 		catch(ModelNotFoundException $e)
 		{
