@@ -12,6 +12,7 @@ return new class extends Migration
     {
         Schema::create('genre_tbl', function (Blueprint $table) {
             $table->id();
+			$table->string("name", FIELD_SIZE_GENRE_MAX);
             $table->timestamps();
         });
     }
