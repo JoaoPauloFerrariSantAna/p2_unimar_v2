@@ -8,7 +8,7 @@ use App\Models\GenreModel;
 
 class GenreController extends Controller
 {
-	public function getGenres
+	public function getGenres()
 	{
 		return response()->json(GenreModel::all());
 	}

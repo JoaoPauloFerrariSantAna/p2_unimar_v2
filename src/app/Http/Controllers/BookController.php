@@ -8,7 +8,7 @@ use App\Models\BookModel;
 
 class BookController extends Controller
 {
-	public function getBooks
+	public function getBooks()
 	{
 		return response()->json(BookModel::all());
 	}
@@ -33,7 +33,6 @@ class BookController extends Controller
 		$book->title	= $req->input("btitle", null);
 		$book->summary	= $req->input("bsummary", null);
 		$book->ispn		= $req->input("bispn", null);
-
 		$book->save();
 		return response()->json($book);
 	}
@@ -46,7 +45,7 @@ class BookController extends Controller
 		$newIspn	= $req->input("bispn", null);
 		try
 		{
-			$book = bookModel::findOrFail($id);
+			$book = BookModel::findOrFail($id);
 		}
 		catch(ModelNotFoundException $e)
 		{
