@@ -3,26 +3,21 @@
 namespace App\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
+use Illuminate\Validation\Rule;
+
+require_once __DIR__ . "/../../../constants/data_sizes.php";
 
 class AuthorStoreRequest extends FormRequest
 {
-    /**
-     * Determine if the user is authorized to make this request.
-     */
-    public function authorize(): bool
-    {
-        return false;
-    }
-
-    /**
-     * Get the validation rules that apply to the request.
-     *
-     * @return array<string, \Illuminate\Contracts\Validation\ValidationRule|array<mixed>|string>
-     */
     public function rules(): array
     {
         return [
-            //
+            "name" => "required|string|min:".FIELD_SIZE_DEFAULT_MIN."|max:".FIELD_SIZE_DEFAULT_MAX,
+            "birthday" => [ 
+                "required",
+                Rule::date()->format("Y-m-d") 
+            ],
+            "biograph" => "required|string|max:".FIELD_SIZE_DESCRIPTION
         ];
     }
 }
