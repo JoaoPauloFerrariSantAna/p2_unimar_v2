@@ -4,71 +4,49 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
+use App\Http\Requests\AuthorStoreRequest;
+use App\Http\Requests\AuthorUpdateRequest;
 use App\Models\AuthorModel;
 
-class AuthorController extends Controller
-{
-	public function getAuthors()
-	{
+class AuthorController extends Controller {
+	public function getAuthors() {
 		return response()->json(AuthorModel::all());
 	}
 
-	public function detailAuthor(int $id)
-	{
+	public function detailAuthor(int $id) {
 		$author = null;
-		try
-		{
+		try {
 			$author = AuthorModel::findOrFail($id);
-		}
-		catch(ModelNotFoundException $e)
-		{
+		} catch(ModelNotFoundException $e) {
 			return response()->json("AUTHOR NOT FOUND");
 		}
 		return response()->json($author);
 	}
 
-	public function storeAuthor(Request $req)
-	{
-		$author				= new AuthorModel();
-		$author->name		= $req->input("aname", null);
-		$author->birthDay	= $req->input("abday", null);
-		$author->biograph 	= $req->input("abio", null);
-		$author->save();
+	public function storeAuthor(AuthorStoreRequest $req) {
+		$data = $req->validated();
+		$author = AuthorModel::create($data);
 		return response()->json($author);
 	}
 
-	public function updateAuthor(Request $req, int $id)
-	{
+	public function updateAuthor(AuthorUpdateRequest $req, int $id) {
 		// why would we want to update someone's birthday?!
-		$author		= null;
-		$newName	= $req->input("aname", null);
-		$newBio		= $req->input("abio", null);
-		try
-		{
+		$data = $req->validated();
+		$author = null;
+		try {
 			$author = AuthorModel::findOrFail($id);
-		}
-		catch(ModelNotFoundException $e)
-		{
+		} catch(ModelNotFoundException $e) {
 			return response()->json("AUTHOR NOT FOUND");
 		}
-		if($newName != null) {
-			$book->name = $newName;
-		}
-		if($newBio != null) {
-			$book->biograph = $newBio;
-		}
+		$author->update($data);
 		return response()->json($author);
 	}
 
-	public function deleteAuthor(int $id)
-	{
+	public function deleteAuthor(int $id) {
 		$author = null;
-		try
-		{
+		try {
 			$author = AuthorModel::findOrFail($id);
-		}
-		catch(ModelNotFoundException $e)
-		{
+		} catch(ModelNotFoundException $e) {
 			return response()->json("AUTHOR NOT FOUND");
 		}
 		$author->delete();
