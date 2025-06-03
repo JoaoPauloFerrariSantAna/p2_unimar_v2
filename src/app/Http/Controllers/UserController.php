@@ -24,7 +24,7 @@ class UserController extends Controller {
 	}
 
 	public function storeUser(UserStoreRequest $req) {
-		$data = $req->validaded();
+		$data = $req->validated();
 		$user = UserModel::create($data);
 		return response()->json($user);
 	}

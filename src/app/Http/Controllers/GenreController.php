@@ -25,13 +25,13 @@ class GenreController extends Controller
 	}
 
 	public function storeGenre(GenreStoreRequest $req) {
-		$data = $req->validaded();
+		$data = $req->validated();
 		$genre = GenreModel::create($data);
 		return response()->json($genre);
 	}
 
 	public function updateGenre(GenreUpdateRequest $req, int $id) {			
-		$data = $req->validaded();
+		$data = $req->validated();
 		$genre = null;
 		try {
 			$genre = GenreModel::findOrFail($id);
