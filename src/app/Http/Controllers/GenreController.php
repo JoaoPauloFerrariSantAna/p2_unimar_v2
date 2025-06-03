@@ -5,7 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 use App\Http\Requests\GenreStoreRequest;
-use App\Http\Requests\GenreUpdateRequest
+use App\Http\Requests\GenreUpdateRequest;
 use App\Models\GenreModel;
 
 class GenreController extends Controller
