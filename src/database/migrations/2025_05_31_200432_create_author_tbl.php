@@ -13,7 +13,7 @@ return new class extends Migration
         Schema::create('author_tbl', function (Blueprint $table) {
             $table->id();
 			$table->string("name", FIELD_SIZE_DEFAULT_MAX);
-			$table->string("bio", FIELD_SIZE_DESCRIPTION);
+			$table->string("biograph", FIELD_SIZE_DESCRIPTION);
 			$table->dateTime("birthday");
             $table->timestamps();
         });
