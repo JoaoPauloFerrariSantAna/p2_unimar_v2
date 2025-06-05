@@ -14,6 +14,9 @@ return new class extends Migration
             $table->id();
 			$table->integer("score");
 			$table->string("review", FIELD_SIZE_DESCRIPTION);
+			// NOTE: this is the solution for now...
+			$table->foreignId("user_id")->constrained()
+				->references("id")->on("user_tbl")->onDelete("cascade");
             $table->timestamps();
         });
     }
