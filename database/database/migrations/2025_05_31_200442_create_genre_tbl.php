@@ -10,16 +10,15 @@ return new class extends Migration
 {
     public function up(): void
     {
-        Schema::create('review_tbl', function (Blueprint $table) {
+        Schema::create('genre_tbl', function (Blueprint $table) {
             $table->id();
-			$table->integer("score");
-			$table->string("review", FIELD_SIZE_DESCRIPTION);
+			$table->string("name", FIELD_SIZE_GENRE_MAX);
             $table->timestamps();
         });
     }
 
     public function down(): void
     {
-        Schema::dropIfExists('review_tbl');
+        Schema::dropIfExists('genre_tbl');
     }
 };

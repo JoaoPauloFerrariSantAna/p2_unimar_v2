@@ -14,6 +14,14 @@ return new class extends Migration
             $table->id();
 			$table->string("title", FIELD_SIZE_DEFAULT_MAX);
 			$table->string("summary", FIELD_SIZE_DESCRIPTION);
+
+			$table->foreignId("author_id")->constrained()
+				->references("id")->on("author_tbl")->onDelete("cascade");
+			$table->foreignId("genre_id")->constrained()
+				->references("id")->on("genre_tbl");
+			$table->foreignId("review_id")->constrained()
+				->references("id")->on("review_tbl");
+
             $table->timestamps();
         });
     }
