@@ -25,9 +25,9 @@ class ReviewController extends Controller
 	}
 
 	public function storeReview(ReviewStoreRequest $req) {
-		$data = $req->validaded();
+		$data = $req->validated();
 		$review = ReviewModel::create($data);
-		return response()->json($user);
+		return response()->json($review);
 	}
 
 	public function updateReview(ReviewUpdateRequest $req) {

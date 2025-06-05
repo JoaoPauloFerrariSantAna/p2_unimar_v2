@@ -10,7 +10,8 @@ class ReviewStoreRequest extends FormRequest {
     public function rules(): array {
         return [
             "review" => "sometimes|string|max:".FIELD_SIZE_DESCRIPTION,
-            "score" => "sometimes|integer|min:".FIELD_SIZE_DEFAULT_MIN."|max:".FIELD_SIZE_DEFAULT_SCORE_MAX
+            "score" => "required|integer|min:".FIELD_SIZE_DEFAULT_MIN."|max:".FIELD_SIZE_DEFAULT_SCORE_MAX,
+			"user_id" => "required|integer"
         ];
     }
 }

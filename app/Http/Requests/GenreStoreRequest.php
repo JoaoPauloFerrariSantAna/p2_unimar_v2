@@ -9,7 +9,7 @@ require_once __DIR__ . "/../../../constants/data_sizes.php";
 class GenreStoreRequest extends FormRequest {
     public function rules(): array {
         return [
-			"name" => "required|string|min:".FIELD_SIZE_DEFAULT_MIN."|max:".FIELD_SIZE_GENRE_NAME_MAX
+			"name" => "required|string|min:".FIELD_SIZE_DEFAULT_MIN."|max:".FIELD_SIZE_GENRE_MAX
         ];
     }
 }

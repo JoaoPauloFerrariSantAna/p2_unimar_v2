@@ -9,4 +9,8 @@ class GenreModel extends Model
 {
     protected $table = "genre_tbl";
     protected $fillable = array("name");
+
+	public function book() {
+		return $this->belongsTo(BookModel::class);
+	}
 }
