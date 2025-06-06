@@ -38,6 +38,8 @@ Route::controller(UserController::class)->group(function() {
 
 Route::controller(BookController::class)->group(function() {
 	Route::get("/book", "getBooks");
+	Route::get("/book/review/{reviewId}", "getBooksReview");
+	Route::get("/book/generalData/{authorId}", "getBookGeneralInfomation");
 	Route::get("/book/{id}", "detailBook");
 	Route::post("/book", "storeBook");
 	Route::patch("/book/{id}", "updateBook");
@@ -46,6 +48,8 @@ Route::controller(BookController::class)->group(function() {
 
 Route::controller(AuthorController::class)->group(function() {
 	Route::get("/author", "getAuthors");
+	Route::get("/author/book", "getAuthorsBooks");
+	Route::get("/author/book/{authorId}", "getAuthorBooks");
 	Route::get("/author/{id}", "detailAuthor");
 	Route::post("/author", "storeAuthor");
 	Route::patch("/author/{id}", "updateAuthor");
