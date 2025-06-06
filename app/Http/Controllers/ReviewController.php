@@ -14,6 +14,20 @@ class ReviewController extends Controller
 		return response()->json(ReviewModel::all());
 	}
 
+	public function getBooksWithGenre() {
+		// i prefer to do theses queries on raw sql :v
+		$query = "SELECT
+			genre_tbl.name, book_tbl.title, book_tbl.summary
+		FROM
+			book_tbl
+		INNER JOIN
+			genre_tbl
+		ON
+			book_tbl.genre_id = genre_tbl.id";
+		$data = DB::select($query);
+		return response()->json($data);
+	}
+
 	public function detailReview(int $id) {
 		$review = null;
 		try {

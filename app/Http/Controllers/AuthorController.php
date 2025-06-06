@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 use App\Http\Requests\AuthorStoreRequest;
 use App\Http\Requests\AuthorUpdateRequest;
@@ -11,6 +12,38 @@ use App\Models\AuthorModel;
 class AuthorController extends Controller {
 	public function getAuthors() {
 		return response()->json(AuthorModel::all());
+	}
+
+	public function getAuthorsBooks() {
+		$query = "SELECT
+			author_tbl.name AS AUTHOR_NAME,
+			book_tbl.title AS BOOK_NAME,
+			book_tbl.summary AS SUMMARY
+		FROM
+			author_tbl
+		JOIN
+			book_tbl
+		ON
+			author_tbl.id = book_tbl.author_id;";
+		$data = DB::select($query);
+		return response()->json($data);
+	}
+
+	public function getAuthorBooks(int $author_id) {
+		$query = "SELECT
+			author_tbl.name AS AUTHOR_NAME,
+			book_tbl.title AS BOOK_NAME,
+			book_tbl.summary AS SUMMARY
+		FROM
+			author_tbl
+		JOIN
+			book_tbl
+		ON
+			author_tbl.id = book_tbl.author_id
+		WHERE
+			author_tbl.id = $author_id";
+		$data = DB::select($query);
+		return response()->json($data);
 	}
 
 	public function detailAuthor(int $id) {
