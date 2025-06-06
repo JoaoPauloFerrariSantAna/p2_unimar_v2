@@ -39,7 +39,7 @@ Route::controller(UserController::class)->group(function() {
 Route::controller(BookController::class)->group(function() {
 	Route::get("/book", "getBooks");
 	Route::get("/book/review/{reviewId}", "getBooksReview");
-	Route::get("/book/generalData/{authorId}", "getBookGeneralInfomation");
+	Route::get("/book/generalData", "getBookGeneralInfomation");
 	Route::get("/book/{id}", "detailBook");
 	Route::post("/book", "storeBook");
 	Route::patch("/book/{id}", "updateBook");
