@@ -7,6 +7,7 @@ use Illuminate\Support\Facades\DB;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 use App\Http\Requests\BookStoreRequest;
 use App\Http\Requests\BookUpdateRequest;
+use App\Http\Requests\ListingRequest;
 use App\Models\BookModel;
 
 class BookController extends Controller {
@@ -14,7 +15,9 @@ class BookController extends Controller {
 		return response()->json(BookModel::all());
 	}
 
-	public function getBooksReview(int $review_id) {
+	public function getBooksReview(ListingRequest $req) {
+		$data = $req->validated();
+		$review_id = $data["idToUse"];
 		$query = "SELECT
 			book_tbl.title, review_tbl.review
 		FROM
@@ -29,7 +32,9 @@ class BookController extends Controller {
 		return response()->json($data);
 	}
 
-	public function getBookByGenre(int $genre_id) {
+	public function getBookByGenre(ListingRequest $req) {
+		$data = $req->validated();
+		$genre_id = $data["idToUse"];
 		$query = "SELECT
 				genre_tbl.name, book_tbl.title, book_tbl.summary
 			FROM
@@ -46,7 +51,9 @@ class BookController extends Controller {
 
 	// we are using authorId here because it makes sense
 	// who created the book was the author, so the author is unique in relation to a book
-	public function getBookGeneralInfomation(int $author_id) {
+	public function getBookGeneralInfomation(ListingRequest $req) {
+		$data = $req->validated();
+		$author_id = $data["idToUse"];
 		$query = "SELECT
 			book_tbl.title AS BOOK_TITLE,
 			book_tbl.summary AS BOOK_SUMMARY,
@@ -60,7 +67,7 @@ class BookController extends Controller {
 		ON
 			book_tbl.review_id = review_tbl.id
 		JOIN
-			author_tbl
+		author_tbl
 		ON
 			book_tbl.author_id = author_tbl.id
 		JOIN
@@ -73,7 +80,9 @@ class BookController extends Controller {
 		return response()->json($data);
 	}
 
-	public function detailBook(int $id) {
+	public function detailBook(ListingRequest $req) {
+		$data = $req->validated();
+		$id = $data["idToUse"];
 		$book = null;
 		try {
 			$book = BookModel::findOrFail($id);
@@ -89,8 +98,10 @@ class BookController extends Controller {
 		return response()->json($book);
 	}
 
-	public function updateBook(BookUpdateRequest $req, int $id) {
-		$data = $req->validated();
+	public function updateBook(BookUpdateRequest $req_book, ListingRequest $req_id) {
+		$data_book = $req_book->validated();
+		$data_id = $req_id->validated();
+		$id = $data_id["idToUse"];
 		$book = null;
 		try {
 			$book = BookModel::findOrFail($id);
@@ -101,7 +112,9 @@ class BookController extends Controller {
 		return response()->json($book);
 	}
 
-	public function deleteBook(int $id) {
+	public function deleteBook(ListingRequest $req) {
+		$data = $req->validated();
+		$id = $data["idToUse"];
 		$book = null;
 		try {
 			$book = BookModel::findOrFail($id);

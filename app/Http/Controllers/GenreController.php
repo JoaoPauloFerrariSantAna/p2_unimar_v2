@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 use App\Http\Requests\GenreStoreRequest;
 use App\Http\Requests\GenreUpdateRequest;
+use App\Http\Requests\ListingRequest;
 use App\Models\GenreModel;
 
 class GenreController extends Controller
@@ -14,12 +15,14 @@ class GenreController extends Controller
 		return response()->json(GenreModel::all());
 	}
 
-	public function detailGenre(int $id) {
+	public function detailGenre(ListingRequest $req) {
+		$data = $req->validated();
+		$id = $data["idToUse"];
 		$genre = null;
 		try {
 			$genre = GenreModel::findOrFail($id);
 		} catch(ModelNotFoundException $e) {
-			return response()->json("genre NOT FOUND");
+			return response()->json("GENRE NOT FOUND");
 		}
 		return response()->json($genre);
 	}
@@ -30,8 +33,10 @@ class GenreController extends Controller
 		return response()->json($genre);
 	}
 
-	public function updateGenre(GenreUpdateRequest $req, int $id) {			
-		$data = $req->validated();
+	public function updateGenre(GenreUpdateRequest $req_genre, ListingRequest $req_id) {
+		$data_genre = $req_genre->validated();
+		$data_id = $req_id->validated();
+		$id = $data_id["idToUse"];
 		$genre = null;
 		try {
 			$genre = GenreModel::findOrFail($id);
@@ -40,7 +45,9 @@ class GenreController extends Controller
 		}
 	}
 
-	public function deleteGenre(int $id) {
+	public function deleteGenre(ListingRequest $req) {
+		$data = $req->validated();
+		$id = $data["idToUse"];
 		$genre = null;
 		try {
 			$genre = GenreModel::findOrFail($id);

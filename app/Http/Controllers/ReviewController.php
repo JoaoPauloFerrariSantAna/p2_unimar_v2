@@ -5,19 +5,24 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 use App\Models\ReviewModel;
+use App\Http\Requests\ListingRequest;
 use App\Http\Requests\ReviewStoreRequest;
 use App\Http\Requests\ReviewUpdateRequest;
+use App\Http\Resources\ReviewStoreResource;
+use App\Http\Resources\ReviewUpdateResource;
 
 class ReviewController extends Controller
 {
 	public function getReviews() {
-		return response()->json(ReviewModel::all());
+		return ReviewStoreResource::collection(ReviewModel::all());
 	}
 
 	public function getBooksWithGenre() {
 		// i prefer to do theses queries on raw sql :v
 		$query = "SELECT
-			genre_tbl.name, book_tbl.title, book_tbl.summary
+			book_tbl.title AS BOOK_TITLE,
+			book_tbl.summary AS BOOK_SUMMARY,
+			genre_tbl.name AS BOOK_GENRE
 		FROM
 			book_tbl
 		INNER JOIN
@@ -28,20 +33,22 @@ class ReviewController extends Controller
 		return response()->json($data);
 	}
 
-	public function detailReview(int $id) {
+	public function detailReview(ListingRequest $req) {
+		$data = $req->validated();
+		$id = $data["idToUse"];
 		$review = null;
 		try {
 			$review = ReviewModel::findOrFail($id);
 		} catch(ModelNotFoundException $e) {
 			return response()->json("REVIEW NOT FOUND");
 		}
-		return response()->json($review);
+		return response()->json(new ReviewStoreResource($review));
 	}
 
 	public function storeReview(ReviewStoreRequest $req) {
 		$data = $req->validated();
 		$review = ReviewModel::create($data);
-		return response()->json($review);
+		return new ReviewStoreResource($review);
 	}
 
 	public function updateReview(ReviewUpdateRequest $req) {
@@ -53,10 +60,12 @@ class ReviewController extends Controller
 			return response()->json("REVIEW NOT FOUND");
 		}
 		$review->update($data);
-		return response()->json($review);
+		return new ReviewUpdateResource($review);
 	}
 
-	public function deleteReview(int $id) {
+	public function deleteReview(ListingRequest $req) {
+		$data = $req->validated();
+		$id = $data["idToUse"];
 		$review = null;
 		try {
 			$review = ReviewModel::findOrFail($id);
@@ -64,6 +73,6 @@ class ReviewController extends Controller
 			return response()->json("REVIEW NOT FOUND");
 		}
 		$review->delete();
-		return response()->json($review);
+		return new ReviewStoreResource($review);
 	}
 }

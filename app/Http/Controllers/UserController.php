@@ -9,6 +9,7 @@ use App\Http\Requests\UserStoreRequest;
 use App\Http\Requests\UserUpdateRequest;
 use App\Http\Resources\UserStoreResource;
 use App\Http\Resources\UserUpdateResource;
+use App\Http\Requests\ListingRequest;
 use App\Models\ReviewModel;
 
 class UserController extends Controller {
@@ -31,7 +32,9 @@ class UserController extends Controller {
 		return response()->json($user_reviews);
 	}
 
-	public function detailUser(int $id) {
+	public function detailUser(ListingRequest $req) {
+		$data = $req->validated();
+		$id = $data["idToUse"];
 		$user = null;
 		try {
 			$user = UserModel::findOrFail($id);
@@ -47,8 +50,10 @@ class UserController extends Controller {
 		return new UserStoreResource($user);
 	}
 
-	public function updateUser(UserUpdateRequest $req, int $id) {
-		$data = $req->validated();
+	public function updateUser(UserUpdateRequest $req_user, ListingRequest $req_id) {
+		$data_user = $req_user->validated();
+		$data_id = $req_id->validated();
+		$id = $data_id["idToUse"];
 		$user = null;
 		try {
 			$user = UserModel::findOrFail($id);
@@ -59,7 +64,9 @@ class UserController extends Controller {
 		return new UserUpdateResource($user);
 	}
 
-	public function deleteUser(int $id) {
+	public function deleteUser(ListingRequest $req) {
+		$data = $req->validated();
+		$id = $data["idToUse"];
 		$user = null;
 		try {
 			$user = UserModel::findOrFail($id);
@@ -67,5 +74,6 @@ class UserController extends Controller {
 			return response()->json("USER NOT FOUND");
 		}
 		$user->delete();
+		return new UserStoreResource($user);
 	}
 }
