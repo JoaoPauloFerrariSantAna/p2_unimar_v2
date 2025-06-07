@@ -8,13 +8,13 @@ use App\Http\Requests\ReviewStoreRequest;
 use App\Http\Requests\ReviewUpdateRequest;
 use App\Http\Resources\ReviewStoreResource;
 use App\Http\Resources\ReviewUpdateResource;
-use App\Repository\ReviewService;
+use App\Services\ReviewService;
 
 class ReviewController extends Controller {
 	private ReviewService $rservice;
 
 	public function __construct(ReviewService $rservice) {
-		$this->review_service = $service;
+		$this->review_service = $rservice;
 	}
 	
 	public function getReviews() {
@@ -22,7 +22,7 @@ class ReviewController extends Controller {
 	}
 
 	public function getBooksWithGenre() {
-		return response()->json($this->review_service->getBooksWithGenre);
+		return response()->json($this->review_service->getBooksWithGenre());
 	}
 
 	public function detailReview(ListingRequest $req) {

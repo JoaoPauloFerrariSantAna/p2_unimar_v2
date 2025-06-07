@@ -21,7 +21,7 @@ class UserController extends Controller {
 	}
 
 	public function getUsers() {
-		return UserStoreResource::collection($this->user_serv);
+		return UserStoreResource::collection($this->user_serv->get());
 	}
 
 	// there is no need to be too specific here 

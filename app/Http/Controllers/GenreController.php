@@ -7,12 +7,18 @@ use Illuminate\Database\Eloquent\ModelNotFoundException;
 use App\Http\Requests\GenreStoreRequest;
 use App\Http\Requests\GenreUpdateRequest;
 use App\Http\Requests\ListingRequest;
-use App\Models\GenreModel;
+use App\Services\GenreService;
 
-class GenreController extends Controller
-{
+
+class GenreController extends Controller {
+	private GenreService $genre_service;
+
+	public function __construct(GenreService $genre_service) {
+		$this->genre_service = $genre_service;
+	}
+
 	public function getGenres() {
-		return response()->json(GenreModel::all());
+		return response()->json($this->genre_service->get());
 	}
 
 	public function detailGenre(ListingRequest $req) {
@@ -20,7 +26,7 @@ class GenreController extends Controller
 		$id = $data["idToUse"];
 		$genre = null;
 		try {
-			$genre = GenreModel::findOrFail($id);
+			$genre = $this->genre_service->details($id);
 		} catch(ModelNotFoundException $e) {
 			return response()->json("GENRE NOT FOUND");
 		}
@@ -29,7 +35,7 @@ class GenreController extends Controller
 
 	public function storeGenre(GenreStoreRequest $req) {
 		$data = $req->validated();
-		$genre = GenreModel::create($data);
+		$genre = $this->genre_service->store($data);
 		return response()->json($genre);
 	}
 
@@ -39,21 +45,20 @@ class GenreController extends Controller
 		$id = $data_id["idToUse"];
 		$genre = null;
 		try {
-			$genre = GenreModel::findOrFail($id);
+			$genre = $this->genre_service->update($data_genre, $id);;
 		} catch(ModelNotFoundException $e) {
 			return response()->json("GENRE NOT FOUND");
 		}
+		return response()->json($genre);
 	}
 
 	public function deleteGenre(ListingRequest $req) {
 		$data = $req->validated();
 		$id = $data["idToUse"];
-		$genre = null;
 		try {
-			$genre = GenreModel::findOrFail($id);
+			$this->genre_service->delete($id);
 		} catch(ModelNotFoundException $e) {
 			return response()->json("GENRE NOT FOUND");
 		}
-		$genre->delete();
 	}
 }

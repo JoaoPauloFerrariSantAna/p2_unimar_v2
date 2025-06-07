@@ -1,6 +1,5 @@
 <?php
-
-namespace App\Repository;
+namespace App\Repositories;
 
 use Illuminate\Support\Facades\DB;
 use App\Models\ReviewModel;
@@ -44,22 +43,4 @@ class ReviewRepository {
 		$data = DB::select($query);
 		return response()->json($data);
 	}
-
-	public function getBooksWithGenre() {
-		// i prefer to do theses queries on raw sql :v
-		$query = "SELECT
-			book_tbl.title AS BOOK_TITLE,
-			book_tbl.summary AS BOOK_SUMMARY,
-			genre_tbl.name AS BOOK_GENRE
-		FROM
-			book_tbl
-		INNER JOIN
-			genre_tbl
-		ON
-			book_tbl.genre_id = genre_tbl.id";
-		$data = DB::select($query);
-		return $data;
-	}
-
-	public function
 }

@@ -1,10 +1,9 @@
 <?php
-
 namespace App\Services;
 
 use App\Repositories\ReviewRepository;
 
-class UserService {
+class ReviewService {
 	private ReviewRepository $user_repo;
 
 	public function __construct(ReviewRepository $user_repo) {
@@ -30,10 +29,6 @@ class UserService {
     public function delete(int $id) {
         $this->rrepo->delete($id);
     }
-
-	public function getBooksWithGenre() {
-		return $this->rrepo->getBooksWithGenre();
-	}
 
 	public function getBooksWithGenre() {
 		return $this->rrepo->getBooksWithGenre();
